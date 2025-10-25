@@ -50,15 +50,15 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterPointCloudLayer(
                 self.INPUT_CLOUD,
-                'Camada Raster de entrada'
+                'Camada Raster de Entrada Cloud Point'
             )
         )
         self.addParameter(
             QgsProcessingParameterNumber(
                 self.INPUT_FILTER, 
-                'Filtro de ruído da altura solo (em metros, valor padrão = 0.5m)',
+                'Filtro de ruído da altura solo (em metros, valor padrão = 0.0m)',
                 type=QgsProcessingParameterNumber.Double,
-                defaultValue=0.5,
+                defaultValue=0,
                 optional=True
             )
         )
@@ -193,16 +193,16 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
         }
 
     def name(self):
-        return 'tnc_biomass_longo'
+        return 'tnc_biomass_amazonia_point_cloud'
 
     def displayName(self):
-        return 'TNC Calculadora de Biomassa Longo'
+        return 'TNC Calculadora de Biomassa Amazônia Nuvem de Pontos'
 
     def group(self):
         return 'Análise de Terreno - Amazônia'
 
     def groupId(self):
-        return 'terrain_analisis_amazonia'
+        return 'terrain_analysis_amazonia'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)

@@ -34,6 +34,8 @@ from qgis.core import QgsProcessingProvider #type: ignore
 from .tnc_test_algorithm import TNC_Test_Alg_Multiband
 from .tnc_biomass_v1 import TNC_Biomass_V1
 from .tnc_biomass_longo import TNC_Biomass_Longo
+from .tnc_biomass_amazonia_chm import TNC_Biomass_Amazonia_CHM
+from .tnc_biomass_cerrado_chm import TNC_Biomass_Cerrado_CHM
 
 class TNC_TESTProvider(QgsProcessingProvider):
 
@@ -44,8 +46,10 @@ class TNC_TESTProvider(QgsProcessingProvider):
         pass
 
     def loadAlgorithms(self):
-        self.addAlgorithm(TNC_Biomass_V1())
+        #self.addAlgorithm(TNC_Biomass_V1())
         self.addAlgorithm(TNC_Biomass_Longo())
+        self.addAlgorithm(TNC_Biomass_Cerrado_CHM())
+        self.addAlgorithm(TNC_Biomass_Amazonia_CHM())
 
     def id(self):
         return 'tnc_test'
