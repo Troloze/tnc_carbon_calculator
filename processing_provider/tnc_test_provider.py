@@ -46,7 +46,7 @@ class TNC_TESTProvider(QgsProcessingProvider):
         pass
 
     def loadAlgorithms(self):
-        #self.addAlgorithm(TNC_Biomass_V1())
+        #self.addAlgorithm(TNC_Biomass_V1()) # (arquivo de teste, não usar)
         self.addAlgorithm(TNC_Biomass_Longo())
         self.addAlgorithm(TNC_Biomass_Cerrado_CHM())
         self.addAlgorithm(TNC_Biomass_Amazonia_CHM())

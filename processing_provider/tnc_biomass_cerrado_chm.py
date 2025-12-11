@@ -7,13 +7,8 @@ __revision__ = '$Format:%H$'
 from qgis.PyQt.QtCore import QCoreApplication # type: ignore
 import numpy as np
 from qgis.core import (QgsProcessingAlgorithm, # type: ignore
-                       QgsProcessingParameterVectorLayer,
                        QgsProcessingParameterRasterLayer,
-                       QgsProcessingParameterNumber,
-                       QgsProcessingParameterRasterDestination,
-                       QgsProcessingParameterFileDestination,
-                       QgsWkbTypes,
-                       QgsVectorLayer)
+                       QgsProcessingParameterRasterDestination)
 
 from osgeo import gdal, gdal_array, ogr, osr #type: ignore
 import numpy as np
@@ -38,10 +33,13 @@ class TNC_Biomass_Cerrado_CHM(QgsProcessingAlgorithm):
         output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
 
         chm_ds = gdal.Open(raster_layer.source())
+
+        # Vetor com valores chm
         chm = chm_ds.GetRasterBand(1).ReadAsArray().astype(np.float32)
 
         result = (2.44 + 6.25 * chm)/2 #
 
+        # Gerar camada com valores do resultado da equação
         driver = gdal.GetDriverByName('GTiff')
         out_ds = driver.Create(
             output_path,

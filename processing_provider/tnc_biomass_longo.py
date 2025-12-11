@@ -80,13 +80,16 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
         if filter_height is None:
             filter_height = 0
 
+        
         if polygon_layer is None:
+            # Caso não haja camada de polígonos, processar todos os pontos
             feedback.pushInfo('Shapefile não identificado. Aplicando equação à todos os pontos na camada...')
             valid_points = cloud_layer
             metrics = {self.METRIC_NAMES['id']: -1}
             metrics |= self.apply_equation(valid_points, filter_height, context, feedback)
             results.append(metrics)
         else:
+            # Caso contrário, processar cada polígono individualmente
             total = polygon_layer.featureCount()
             feedback.pushInfo(f'{total} polígono(s) identificado(s).')
             current = 0
@@ -98,6 +101,7 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
                 else:
                     metrics[self.METRIC_NAMES['id']] = f.id()
                 feedback.pushInfo(f'Processando pontos no polígono {f.id()} ({current}/{total})')
+                # Cria camada de polígono temporária do formato do polígono atual
                 current_polygon = self.create_temp_polygon_layer(polygon_layer, cloud_layer, f, context, feedback)
                 feedback.pushInfo(f'SRC da nuvem: {cloud_layer.crs().authid()}')
                 feedback.pushInfo(f'SRC do polígono: {current_polygon.crs().authid()}')
@@ -108,6 +112,7 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
                     'OUTPUT': 'TEMPORARY_OUTPUT'
                 }, context=context, feedback=feedback, is_child_algorithm=False)
                 valid_points = clip_result['OUTPUT']
+                # Aplica a equação sobre os pontos dentro do polígono temporário
                 metrics |= self.apply_equation(valid_points, filter_height, context, feedback)
                 results.append(metrics)
 
@@ -150,8 +155,10 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
             'OUTPUT': 'TEMPORARY_OUTPUT'
         }, context=context, feedback=feedback)
 
+        # Alturas de todos os pontos individualmente
         valid_heights = [f['z_first'] for f in z_extract['OUTPUT'].getFeatures()]
         
+        # Caso vazio retornar nulo
         if len(valid_heights) == 0:
             feedback.pushWarning('Nenhum ponto encontrado no polígono')
             return {
@@ -173,10 +180,11 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
         h25 = float(np.percentile(valid_heights, 25))  # quartil 1
         h75 = float(np.percentile(valid_heights, 75))  # quartil 3
         hiq = float(h75 - h25)  # interquartil
-        kh = float(stats.kurtosis(valid_heights)) # curtose
+        kh = float(stats.kurtosis(valid_heights)) # curtose (!!! Valores não batem com os valores do programa do joão !!!)
 
         feedback.pushInfo(f"hm: {hm}, h5: {h5}, h10: {h10}, h100: {h100}, hiq: {hiq}, kh: {kh}, cnt: {len(valid_heights)}")
 
+        # Equação
         ACD_ALS = 0.2 * (hm ** 2.02) * (kh ** 0.66) * (h5 ** 0.11) * (h10 ** -0.32) * (hiq ** 0.5) * (h100 ** -0.82)
         sigma = 0.66 * (ACD_ALS ** 0.71) # Desvio padrão
 

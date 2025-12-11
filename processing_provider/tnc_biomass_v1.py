@@ -1,3 +1,6 @@
+### 
+### Arquivo de teste, ignore isso aqui
+###
 __author__ = 'Vitor Di Lorenzzi Nunes da Cunha'
 __date__ = '2025-09-25'
 __copyright__ = '(C) 2025 by Vitor Di Lorenzzi Nunes da Cunha'
