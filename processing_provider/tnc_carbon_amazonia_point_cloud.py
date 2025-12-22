@@ -19,7 +19,7 @@ from scipy import stats #type: ignore
 import processing #type: ignore
 import csv
 
-class TNC_Biomass_Longo(QgsProcessingAlgorithm):
+class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
     INPUT_POLYGON = 'INPUT_POLYGON'
     INPUT_CLOUD = 'INPUT_POINT_CLOUD'
     INPUT_FILTER = 'INPUT_HEIGH_FILTER'
@@ -201,19 +201,19 @@ class TNC_Biomass_Longo(QgsProcessingAlgorithm):
         }
 
     def name(self):
-        return 'tnc_biomass_amazonia_point_cloud'
+        return 'tnc_carbon_amazonia_point_cloud'
 
     def displayName(self):
-        return 'TNC Calculadora de Biomassa Amazônia Nuvem de Pontos'
+        return 'Calculadora de Carbono - Nuvem de Pontos'
 
     def group(self):
-        return 'Análise de Terreno - Amazônia'
+        return 'Calculadora de Carbono - Amazônia'
 
     def groupId(self):
-        return 'terrain_analysis_amazonia'
+        return 'carbon_calculator_amazonia'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return TNC_Biomass_Longo()
+        return TNC_Carbon_Amazonia_Point_Cloud()

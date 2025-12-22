@@ -16,7 +16,7 @@ from scipy import stats #type: ignore
 import processing #type: ignore
 import os
 
-class TNC_Biomass_Amazonia_CHM(QgsProcessingAlgorithm):
+class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
     INPUT_RASTER = 'INPUT_RASTER'
     OUTPUT = 'OUTPUT'
 
@@ -57,19 +57,19 @@ class TNC_Biomass_Amazonia_CHM(QgsProcessingAlgorithm):
         return {self.OUTPUT: output_path}
 
     def name(self):
-        return 'tnc_biomass_amazonia_chm'
+        return 'tnc_carbon_amazonia_chm'
 
     def displayName(self):
-        return 'TNC Calculadora de Biomassa Amazônia CHM'
+        return 'Calculadora de Carbono - CHM'
 
     def group(self):
-        return 'Análise de Terreno - Amazônia'
+        return 'Calculadora de Carbono - Amazônia'
 
     def groupId(self):
-        return 'terrain_analysis_amazonia'
+        return 'carbon_calculator_amazonia'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return TNC_Biomass_Amazonia_CHM()
+        return TNC_Carbon_Amazonia_CHM()
