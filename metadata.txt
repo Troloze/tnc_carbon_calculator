@@ -3,14 +3,14 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=TNC test
+name=Carbon Calculator
 qgisMinimumVersion=3.0
-description=Plugin de teste para o projeto da TNC
+description=The Carbon Calculator plugin takes point cloud and chm files, and returns an estimate of the carbon density based on different biomes
 version=0.1
 author=Vitor Di Lorenzzi Nunes da Cunha
-email=não
+email=vitordilorenzzi1@gmail.com
 
-about=Pega uma camada, aplica uma equação, gera nova camada.
+about=The Carbon Calculator plugin is to be used for estimating the carbon density of CHM and point cloud files, it has different settings based on biomes.
 
 tracker=http://bugs
 repository=http://repo
@@ -23,13 +23,13 @@ hasProcessingProvider=yes
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python
+tags=calculator, python
 
 homepage=http://homepage
 category=Analysis
 icon=icon.png
 # experimental flag
-experimental=True
+experimental=False
 
 # deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False

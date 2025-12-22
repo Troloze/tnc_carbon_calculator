@@ -1,7 +1,7 @@
 Plugin Builder Results
 
-Your plugin TNC_TEST was created in:
-    C:/Users/Vitor/Documents/QGIS\tnc_test
+Your plugin CarbonCalculator was created in:
+    C:/Users/Vitor/Documents/QGIS\tnc_carbon_calculator
 
 Your QGIS plugin directory is located at:
     C:/Users/Vitor/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
@@ -15,7 +15,7 @@ What's Next:
 
   * Test the plugin by enabling it in the QGIS plugin manager
 
-  * Customize it by editing the implementation file: ``tnc_test.py``
+  * Customize it by editing the implementation file: ``tnc_carbon_calculator.py``
 
   * You can use the Makefile to compile your Ui and resource files when
     you make changes. This requires GNU make (gmake)

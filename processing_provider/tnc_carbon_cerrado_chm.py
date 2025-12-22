@@ -16,7 +16,7 @@ from scipy import stats #type: ignore
 import processing #type: ignore
 import os
 
-class TNC_Biomass_Cerrado_CHM(QgsProcessingAlgorithm):
+class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
     INPUT_RASTER = 'INPUT_RASTER'
     OUTPUT = 'OUTPUT'
 
@@ -57,19 +57,19 @@ class TNC_Biomass_Cerrado_CHM(QgsProcessingAlgorithm):
         return {self.OUTPUT: output_path}
 
     def name(self):
-        return 'tnc_biomass_cerrado_chm'
+        return 'tnc_carbon_cerrado_chm'
 
     def displayName(self):
-        return 'TNC Calculadora de Biomassa Cerrado CHM'
+        return 'Calculadora de Carbono - CHM'
 
     def group(self):
-        return 'Análise de Terreno - Cerrado'
+        return 'Calculadora de Carbono - Cerrado'
 
     def groupId(self):
-        return 'terrain_analysis_cerrado'
+        return 'carbon_calculator_cerrado'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return TNC_Biomass_Cerrado_CHM()
+        return TNC_Carbon_Cerrado_CHM()
