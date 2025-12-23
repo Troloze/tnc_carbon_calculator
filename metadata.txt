@@ -12,8 +12,8 @@ email=vitordilorenzzi1@gmail.com
 
 about=The Carbon Calculator plugin is to be used for estimating the carbon density of CHM and point cloud files, it has different settings based on biomes.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono/issues
+repository=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono
 # End of mandatory metadata
 
 # Recommended items:

@@ -71,22 +71,19 @@ class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
         )
 
     def processAlgorithm(self, parameters, context, feedback):
+        # Receber camada de núvem de pontos, camada shapefile, e caminho para a saída do CSV
         cloud_layer = self.parameterAsPointCloudLayer(parameters, self.INPUT_CLOUD, context)
         polygon_layer = self.parameterAsVectorLayer(parameters, self.INPUT_POLYGON, context)
-        filter_height = self.parameterAsDouble(parameters, self.INPUT_FILTER, context)
         csv_path = self.parameterAsFileOutput(parameters, self.OUTPUT, context)
 
         results = []
-        if filter_height is None:
-            filter_height = 0
-
         
         if polygon_layer is None:
             # Caso não haja camada de polígonos, processar todos os pontos
             feedback.pushInfo('Shapefile não identificado. Aplicando equação à todos os pontos na camada...')
             valid_points = cloud_layer
             metrics = {self.METRIC_NAMES['id']: -1}
-            metrics |= self.apply_equation(valid_points, filter_height, context, feedback)
+            metrics |= self.apply_equation(valid_points, context, feedback)
             results.append(metrics)
         else:
             # Caso contrário, processar cada polígono individualmente
@@ -113,7 +110,7 @@ class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
                 }, context=context, feedback=feedback, is_child_algorithm=False)
                 valid_points = clip_result['OUTPUT']
                 # Aplica a equação sobre os pontos dentro do polígono temporário
-                metrics |= self.apply_equation(valid_points, filter_height, context, feedback)
+                metrics |= self.apply_equation(valid_points, context, feedback)
                 results.append(metrics)
 
         feedback.pushInfo(f'Processamento finalizado, criando arquivo csv com o resultado em "{csv_path}"')
@@ -142,7 +139,7 @@ class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
         
         return reprojection_result['OUTPUT']
     
-    def apply_equation(self, points, filter_height, context, feedback):
+    def apply_equation(self, points, context, feedback):
         point_geopackage = processing.run("pdal:exportvector", {
             'INPUT': points,
             'OUTPUT': 'TEMPORARY_OUTPUT'

@@ -30,6 +30,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
 
 
     def processAlgorithm(self, parameters, context, feedback):
+        # Receber camada de entrada e o caminho para a camada de saída
         raster_layer = self.parameterAsRasterLayer(parameters, self.INPUT_RASTER, context)
         output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT, context)
 
@@ -37,7 +38,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
         # Vetor com valores chm
         chm = chm_ds.GetRasterBand(1).ReadAsArray().astype(np.float32)
 
-        result = 0.025 * (chm ** 1.99) # Longo
+        result = 0.025 * (chm ** 1.99) # Aplicar a equação do Longo
         
         # Gerar camada com valores do resultado da equação
         driver = gdal.GetDriverByName('GTiff')
@@ -52,7 +53,6 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
         out_ds.SetProjection(chm_ds.GetProjection())
         out_ds.GetRasterBand(1).WriteArray(result.astype(np.uint16))
         out_ds.FlushCache()
-
 
         return {self.OUTPUT: output_path}
 
