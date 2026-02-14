@@ -47,17 +47,17 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
             chm_ds.RasterXSize,
             chm_ds.RasterYSize,
             1,
-            gdal.GDT_UInt16
+            gdal.GDT_Float32
         )
         out_ds.SetGeoTransform(chm_ds.GetGeoTransform())
         out_ds.SetProjection(chm_ds.GetProjection())
-        out_ds.GetRasterBand(1).WriteArray(result.astype(np.uint16))
+        out_ds.GetRasterBand(1).WriteArray(result.astype(np.float32))
         out_ds.FlushCache()
 
         return {self.OUTPUT: output_path}
 
     def name(self):
-        return 'tnc_carbon_amazonia_chm'
+        return 'amazonchm'
 
     def displayName(self):
         return 'Calculadora de Carbono - CHM'
@@ -66,7 +66,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
         return 'Calculadora de Carbono - Amazônia'
 
     def groupId(self):
-        return 'carbon_calculator_amazonia'
+        return 'amazon'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
