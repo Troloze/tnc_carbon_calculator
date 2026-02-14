@@ -50,7 +50,7 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         )
         out_ds.SetGeoTransform(chm_ds.GetGeoTransform())
         out_ds.SetProjection(chm_ds.GetProjection())
-        out_ds.GetRasterBand(1).WriteArray(result.astype(np.uint16))
+        out_ds.GetRasterBand(1).WriteArray(result.astype(np.float32))
         out_ds.FlushCache()
 
 
