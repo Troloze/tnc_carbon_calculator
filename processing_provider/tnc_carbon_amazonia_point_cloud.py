@@ -177,7 +177,7 @@ class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
         h25 = float(np.percentile(valid_heights, 25))  # quartil 1
         h75 = float(np.percentile(valid_heights, 75))  # quartil 3
         hiq = float(h75 - h25)  # interquartil
-        kh = float(stats.kurtosis(valid_heights)) # curtose (!!! Valores não batem com os valores do programa do joão !!!)
+        kh = abs(float(stats.kurtosis(valid_heights))) # curtose (!!! Valores não batem com os valores do programa do joão !!!)
 
         feedback.pushInfo(f"hm: {hm}, h5: {h5}, h10: {h10}, h100: {h100}, hiq: {hiq}, kh: {kh}, cnt: {len(valid_heights)}")
 

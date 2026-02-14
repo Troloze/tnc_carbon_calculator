@@ -47,7 +47,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
             chm_ds.RasterXSize,
             chm_ds.RasterYSize,
             1,
-            gdal.GDT_UInt16
+            gdal.GDT_Float32
         )
         out_ds.SetGeoTransform(chm_ds.GetGeoTransform())
         out_ds.SetProjection(chm_ds.GetProjection())
