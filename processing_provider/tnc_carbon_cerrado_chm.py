@@ -57,7 +57,7 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         return {self.OUTPUT: output_path}
 
     def name(self):
-        return 'tnc_carbon_cerrado_chm'
+        return 'cerradochm'
 
     def displayName(self):
         return 'Calculadora de Carbono - CHM'
@@ -66,7 +66,7 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         return 'Calculadora de Carbono - Cerrado'
 
     def groupId(self):
-        return 'carbon_calculator_cerrado'
+        return 'cerrado'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)

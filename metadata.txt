@@ -3,14 +3,15 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Carbon Calculator
+name=TNC Carbon Calculator
 qgisMinimumVersion=3.0
-description=The Carbon Calculator plugin takes point cloud and chm files, and returns an estimate of the carbon density based on different biomes
-version=0.1
+description=Provides estimates of carbon density from remotely sensed pictures taken with drones based on different biomes. 
+version=0.1.1
 author=Vitor Di Lorenzzi Nunes da Cunha
 email=vitordilorenzzi1@gmail.com
 
-about=The Carbon Calculator plugin is to be used for estimating the carbon density of CHM and point cloud files, it has different settings based on biomes.
+about=The TNC Carbon Calculator is used to estimate carbon density from remotely sensed pictures taken from drones depending on the biome. It currently accepts only Point Cloud and Canopy Height Model inputs. 
+    This plugin was developed for QGIS with the objective of democratizing access to remote sensing–based methodologies for estimating aboveground vegetation biomass and carbon stocks. It is intended for society as a whole, particularly researchers and technical staff from environmental NGOs, Higher Education Institutions (HEIs), and public-sector managers who use data from low-cost drones (equipped with RGB, multispectral, or LiDAR sensors), including intermediate products such as Canopy Height Models (CHM) or point clouds, to calculate biomass and carbon estimates in a fast, replicable, and scientifically robust manner. Integrated into the QGIS workflow, the plugin applies models calibrated for the Cerrado, Atlantic Forest, and Amazon biomes using forest inventory data and LiDAR measurements, supporting ecological restoration monitoring, carbon credit initiatives, and MRV (Monitoring, Reporting, and Verification) systems, while expanding the scale and frequency of environmental monitoring in the context of climate change.
 
 tracker=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono/issues
 repository=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono
@@ -20,10 +21,11 @@ repository=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono
 
 hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
-# changelog=
+changelog=0.1.1 2026-02-14
+    - Bug fixes
 
 # Tags are comma separated with spaces allowed
-tags=calculator, python
+tags=calculator, python, carbon, cerrado, amazon
 
 homepage=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono
 category=Analysis

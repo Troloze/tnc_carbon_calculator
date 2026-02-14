@@ -91,4 +91,4 @@ class CarbonCalculatorProvider(QgsProcessingProvider):
         (version 2.2.1)". This string should be localised. The default
         implementation returns the same string as name().
         """
-        return self.name() + " (version 0.1.0)"
+        return self.name() + " (version 0.1.1)"

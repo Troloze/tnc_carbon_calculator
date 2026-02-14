@@ -57,7 +57,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
         return {self.OUTPUT: output_path}
 
     def name(self):
-        return 'tnc_carbon_amazonia_chm'
+        return 'amazonchm'
 
     def displayName(self):
         return 'Calculadora de Carbono - CHM'
@@ -66,7 +66,7 @@ class TNC_Carbon_Amazonia_CHM(QgsProcessingAlgorithm):
         return 'Calculadora de Carbono - Amazônia'
 
     def groupId(self):
-        return 'carbon_calculator_amazonia'
+        return 'amazon'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
