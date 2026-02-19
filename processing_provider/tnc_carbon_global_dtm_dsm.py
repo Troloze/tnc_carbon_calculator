@@ -20,8 +20,9 @@ import processing # type: ignore
 import numpy as np
 import csv
 
-class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
-    INPUT_RASTER = 'INPUT_RASTER'
+class TNC_Carbon_Global_DTM_DSM(QgsProcessingAlgorithm):
+    INPUT_RASTER_DTM = 'INPUT_RASTER_DTM'
+    INPUT_RASTER_DSM = 'INPUT_RASTER_DSM'
     INPUT_POLYGON = 'INPUT_POLYGON'
     INPUT_CANOPY_COVER_THRESHOLD = 'INPUT_CANOPY_COVER_THRESHOLD'
     OUTPUT_RASTER = 'OUTPUT_RASTER'
@@ -31,8 +32,14 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
     def initAlgorithm(self, config=None):
         self.addParameter(
             QgsProcessingParameterRasterLayer(
-                self.INPUT_RASTER,
-                self.tr('Canopy height model raster layer (CHM)')
+                self.INPUT_RASTER_DTM,
+                self.tr('Digital terrain model raster layer (DTM)')
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterRasterLayer(
+                self.INPUT_RASTER_DSM,
+                self.tr('Digital surface model raster layer (DSM)')
             )
         )
         self.addParameter(
@@ -70,36 +77,46 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
 
     def processAlgorithm(self, parameters, context, feedback):
         # Receber camada de entrada e o caminho para a camada de saída
-        raster_layer = self.parameterAsRasterLayer(parameters, self.INPUT_RASTER, context)
+        raster_layer_dtm = self.parameterAsRasterLayer(parameters, self.INPUT_RASTER_DTM, context)
+        raster_layer_dsm = self.parameterAsRasterLayer(parameters, self.INPUT_RASTER_DSM, context)
         canopy_cover_threshold = self.parameterAsDouble(parameters, self.INPUT_CANOPY_COVER_THRESHOLD, context)
 
         polygon_layer = self.parameterAsVectorLayer(parameters, self.INPUT_POLYGON, context)
         output_path = self.parameterAsOutputLayer(parameters, self.OUTPUT_RASTER, context)
         csv_path = self.parameterAsFileOutput(parameters, self.OUTPUT_CSV, context)
 
-        chm_ds = gdal.Open(raster_layer.source())
-        chm_projection = chm_ds.GetProjection()
-        chm_srs = osr.SpatialReference(wkt=chm_projection)
+        feedback.pushInfo(f"output_path = {output_path}")
+        dtm_ds = gdal.Open(raster_layer_dtm.source())
+        dsm_ds = gdal.Open(raster_layer_dsm.source())
 
-        chm_geotransform = chm_ds.GetGeoTransform()
-        pixel_width = abs(chm_geotransform[1])
-        pixel_height = abs(chm_geotransform[5])
+        dtm_projection = dtm_ds.GetProjection()
+        dtm_srs = osr.SpatialReference(wkt=dtm_projection)
+
+        dtm_geotransform = dtm_ds.GetGeoTransform()
+        pixel_width = abs(dtm_geotransform[1])
+        pixel_height = abs(dtm_geotransform[5])
         
-        linear_units_factor = chm_srs.GetLinearUnits()
+        linear_units_factor = dtm_srs.GetLinearUnits()
         pixel_area_native = pixel_height * pixel_width
 
         pixel_area_m2 = pixel_area_native * (linear_units_factor ** 2)
-
-        chm_band = chm_ds.GetRasterBand(1)
-        chm = chm_band.ReadAsArray().astype(np.float32)
-
-        nodata_value = chm_band.GetNoDataValue()
-       
-        if nodata_value is None:
-            nodata_mask = chm is None
-        else:
-            nodata_mask = chm == nodata_value
         
+        dtm_band = dtm_ds.GetRasterBand(1)
+        dsm_band = dsm_ds.GetRasterBand(1)
+
+        dtm = dtm_band.ReadAsArray().astype(np.float32)
+        dsm = dsm_band.ReadAsArray().astype(np.float32)
+
+        chm = abs(dsm - dtm) # CHM is always 0 or positive, so doing this will give the right results even with the inputs swapped. 
+
+        nodata_value = dtm_band.GetNoDataValue()
+        if nodata_value is None:
+            nodata_mask = dtm is None
+        else:
+            nodata_mask = dtm == nodata_value
+
+        chm[nodata_mask] = nodata_value
+
         if nodata_value is None:
             chm_nodata_count = np.count_nonzero(chm is None)
             canopy_coverage = np.count_nonzero((chm >= canopy_cover_threshold) & (chm is not None)) 
@@ -110,19 +127,19 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         total_coverage = np.size(chm) - chm_nodata_count
         canopy_cover_rate = canopy_coverage / total_coverage
 
-        result_raster = -0.12 - 3.03 * canopy_cover_rate + 4.58 * chm
+        result_raster = 10.03 - 31.27 * canopy_cover_rate + 6.15 * chm
         result_raster[nodata_mask] = nodata_value
 
         driver = gdal.GetDriverByName('GTiff')
         out_ds = driver.Create(
             output_path,
-            chm_ds.RasterXSize,
-            chm_ds.RasterYSize,
+            dtm_ds.RasterXSize,
+            dtm_ds.RasterYSize,
             1,
             gdal.GDT_Float32
         )
-        out_ds.SetGeoTransform(chm_geotransform)
-        out_ds.SetProjection(chm_projection)
+        out_ds.SetGeoTransform(dtm_geotransform)
+        out_ds.SetProjection(dtm_projection)
         out_band = out_ds.GetRasterBand(1)
         out_band.SetNoDataValue(nodata_value)
         out_band.WriteArray(result_raster.astype(np.float32))
@@ -215,19 +232,19 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         return csv_results
 
     def name(self):
-        return 'cerradochm'
+        return 'globaldtmdsm'
 
     def displayName(self):
-        return self.tr('Canopy Height Model (CHM)')
+        return self.tr('Digital Terrain Model + Digital Surface Model (DTM + DSM)')
 
     def group(self):
-        return self.tr('Carbon Calculator - Cerrado')
+        return self.tr('Carbon Calculator - Global')
 
     def groupId(self):
-        return 'cerrado'
+        return 'global'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return TNC_Carbon_Cerrado_CHM()
+        return TNC_Carbon_Global_DTM_DSM()

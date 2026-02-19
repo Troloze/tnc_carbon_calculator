@@ -20,7 +20,7 @@ import processing # type: ignore
 import numpy as np
 import csv
 
-class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
+class TNC_Carbon_Atlantic_CHM(QgsProcessingAlgorithm):
     INPUT_RASTER = 'INPUT_RASTER'
     INPUT_POLYGON = 'INPUT_POLYGON'
     INPUT_CANOPY_COVER_THRESHOLD = 'INPUT_CANOPY_COVER_THRESHOLD'
@@ -110,7 +110,7 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         total_coverage = np.size(chm) - chm_nodata_count
         canopy_cover_rate = canopy_coverage / total_coverage
 
-        result_raster = -0.12 - 3.03 * canopy_cover_rate + 4.58 * chm
+        result_raster = -10.47 + 5.56 * chm
         result_raster[nodata_mask] = nodata_value
 
         driver = gdal.GetDriverByName('GTiff')
@@ -215,19 +215,19 @@ class TNC_Carbon_Cerrado_CHM(QgsProcessingAlgorithm):
         return csv_results
 
     def name(self):
-        return 'cerradochm'
+        return 'atlanticnchm'
 
     def displayName(self):
         return self.tr('Canopy Height Model (CHM)')
 
     def group(self):
-        return self.tr('Carbon Calculator - Cerrado')
+        return self.tr('Carbon Calculator - Atlantic Rainforest')
 
     def groupId(self):
-        return 'cerrado'
+        return 'atlantic'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
 
     def createInstance(self):
-        return TNC_Carbon_Cerrado_CHM()
+        return TNC_Carbon_Atlantic_CHM()

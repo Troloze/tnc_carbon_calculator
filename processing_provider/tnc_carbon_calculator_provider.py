@@ -32,8 +32,17 @@ __revision__ = '$Format:%H$'
 
 from qgis.core import QgsProcessingProvider #type:ignore
 from .tnc_carbon_amazonia_chm import TNC_Carbon_Amazonia_CHM
-from .tnc_carbon_cerrado_chm import TNC_Carbon_Cerrado_CHM
 from .tnc_carbon_amazonia_point_cloud import TNC_Carbon_Amazonia_Point_Cloud
+from .tnc_carbon_amazonia_dtm_dsm import TNC_Carbon_Amazonia_DTM_DSM
+
+from .tnc_carbon_cerrado_chm import TNC_Carbon_Cerrado_CHM
+from .tnc_carbon_cerrado_dtm_dsm import TNC_Carbon_Cerrado_DTM_DSM
+
+from .tnc_carbon_atlantic_chm import TNC_Carbon_Atlantic_CHM
+from .tnc_carbon_atlantic_dtm_dsm import TNC_Carbon_Atlantic_DTM_DSM
+
+from .tnc_carbon_global_chm import TNC_Carbon_Global_CHM
+from .tnc_carbon_global_dtm_dsm import TNC_Carbon_Global_DTM_DSM
 
 
 class CarbonCalculatorProvider(QgsProcessingProvider):
@@ -56,8 +65,15 @@ class CarbonCalculatorProvider(QgsProcessingProvider):
         Loads all algorithms belonging to this provider.
         """
         self.addAlgorithm(TNC_Carbon_Amazonia_CHM())
+        #self.addAlgorithm(TNC_Carbon_Amazonia_Point_Cloud())
+        self.addAlgorithm(TNC_Carbon_Amazonia_DTM_DSM())
         self.addAlgorithm(TNC_Carbon_Cerrado_CHM())
-        self.addAlgorithm(TNC_Carbon_Amazonia_Point_Cloud())
+        self.addAlgorithm(TNC_Carbon_Cerrado_DTM_DSM())
+        self.addAlgorithm(TNC_Carbon_Atlantic_CHM())
+        self.addAlgorithm(TNC_Carbon_Atlantic_DTM_DSM())
+        self.addAlgorithm(TNC_Carbon_Global_CHM())
+        self.addAlgorithm(TNC_Carbon_Global_DTM_DSM())
+        
 
 
     def id(self):

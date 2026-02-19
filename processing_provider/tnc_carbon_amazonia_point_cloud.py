@@ -201,7 +201,7 @@ class TNC_Carbon_Amazonia_Point_Cloud(QgsProcessingAlgorithm):
         return 'amazonpointcloud'
 
     def displayName(self):
-        return 'Calculadora de Carbono - Nuvem de Pontos'
+        return 'Point Cloud'
 
     def group(self):
         return 'Calculadora de Carbono - Amazônia'
