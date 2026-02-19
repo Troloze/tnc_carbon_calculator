@@ -6,7 +6,7 @@
 name=TNC Carbon Calculator
 qgisMinimumVersion=3.0
 description=Provides estimates of carbon density from remotely sensed pictures taken with drones based on different biomes. 
-version=0.1.1
+version=0.1.2
 author=Vitor Di Lorenzzi Nunes da Cunha
 email=vitordilorenzzi1@gmail.com
 
@@ -21,8 +21,13 @@ repository=https://github.com/Troloze/Plugin-TNC-Calculadora-de-Carbono
 
 hasProcessingProvider=yes
 # Uncomment the following line and add your changelog:
-changelog=0.1.1 2026-02-14
+changelog=0.1.2 2026-02-19
+    - DTM + DSM Algorithms
+    - New Equations
+    - Temporarily disabled point cloud algorithms
+    0.1.1 2026-02-14
     - Bug fixes
+
 
 # Tags are comma separated with spaces allowed
 tags=calculator, python, carbon, cerrado, amazon
